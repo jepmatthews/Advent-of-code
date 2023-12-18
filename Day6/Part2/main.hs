@@ -1,7 +1,7 @@
 main = do
   contents <- readFile "input.txt"
-  let test = processLines (lines contents)
-  print (product test)
+  let results = processLines (lines contents)
+  print (product results)
 
 processLines :: [String] -> [Int]
 processLines [l1, l2] =
