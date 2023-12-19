@@ -1,8 +1,8 @@
 main = do
   contents <- readFile "input.txt"
   let sequences = map parseLine (lines contents)
-  let lins = map getAllDifferences sequences
-  let nextResults = map getPreviousResult lins
+  let differences = map getAllDifferences sequences
+  let nextResults = map getPreviousResult differences
   print (sum nextResults)
 
 

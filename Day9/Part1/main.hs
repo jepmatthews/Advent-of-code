@@ -1,8 +1,8 @@
 main = do
   contents <- readFile "input.txt"
   let sequences = map parseLine (lines contents)
-  let lins = map getAllDifferences sequences
-  let nextResults = map getNextResult lins
+  let differences = map getAllDifferences sequences
+  let nextResults = map getNextResult differences
   print (sum nextResults)
 
 getNextResult :: [[Int]] -> Int
