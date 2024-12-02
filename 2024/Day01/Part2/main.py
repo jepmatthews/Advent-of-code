@@ -12,6 +12,5 @@ for str in f.read().splitlines():
         dictionary[y] = (dictionary[y][0] , dictionary[y][1] + 1)
     else:
         dictionary[y] = (0,1)
-print (dictionary)
 result = sum(map(lambda a: a[0]*a[1][0]*a[1][1],dictionary.items()))
 print(result)
