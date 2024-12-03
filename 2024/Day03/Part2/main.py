@@ -11,7 +11,7 @@ for match in x:
         do = True
     elif(match == "don't()"):
         do = False
-    elif(do == True):
+    elif(do):
         vals = match[4:-1].split(",")
         result += int(vals[0]) * int(vals[1])
 print (result)
