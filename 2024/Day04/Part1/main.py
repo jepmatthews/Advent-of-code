@@ -17,9 +17,6 @@ class DiagonalIterator:
             elif self.direction == "SE":
                 self.x += 1
                 self.y += 1
-            elif self.direction == "SW":
-                self.x -= 1
-                self.y += 1
             return result
 
 def countXmas(string):
@@ -32,23 +29,17 @@ lines = list(map(lambda str: str.replace("\n",""), lines))
 for line in lines:
     count += countXmas(line)
 
-x = 0
-y = 0
-while(True):
-    if x >= len(lines[0]):
-        break
-    count += countXmas(''.join(iter(DiagonalIterator(lines,x,y,'NE'))))
+x,y = 0,0 
+while(x < len(lines[0])):
+    count += countXmas(''.join(DiagonalIterator(lines,x,y,'NE')))
     if y < len(lines) - 1:
         y += 1
     else:
         x += 1
 
-x = 0
-y = len(lines) - 1
-while(True):
-    if x >= len(lines[0]):
-        break
-    count += countXmas(''.join(iter(DiagonalIterator(lines,x,y,'SE'))))
+x,y = 0,len(lines) - 1
+while(x < len(lines[0])):
+    count += countXmas(''.join(DiagonalIterator(lines,x,y,'SE')))
     if y > 0:
         y -= 1
     else:
