@@ -17,9 +17,10 @@ class DiagonalIterator:
             elif self.direction == "SE":
                 self.x += 1
                 self.y += 1
+
             return result
 
-def countXmas(string):
+def count_xmas(string):
     return string.count("XMAS") + string.count("SAMX")
 
 f = open("../input.txt")
@@ -27,11 +28,11 @@ count = 0
 lines = f.readlines()
 lines = list(map(lambda str: str.replace("\n",""), lines))
 for line in lines:
-    count += countXmas(line)
+    count += count_xmas(line)
 
 x,y = 0,0 
 while(x < len(lines[0])):
-    count += countXmas(''.join(DiagonalIterator(lines,x,y,'NE')))
+    count += count_xmas(''.join(DiagonalIterator(lines,x,y,'NE')))
     if y < len(lines) - 1:
         y += 1
     else:
@@ -39,7 +40,7 @@ while(x < len(lines[0])):
 
 x,y = 0,len(lines) - 1
 while(x < len(lines[0])):
-    count += countXmas(''.join(DiagonalIterator(lines,x,y,'SE')))
+    count += count_xmas(''.join(DiagonalIterator(lines,x,y,'SE')))
     if y > 0:
         y -= 1
     else:
@@ -48,6 +49,6 @@ while(x < len(lines[0])):
 lines = list(map(list,zip(*lines)))
 
 for line in lines:
-    count += countXmas(''.join(line))
+    count += count_xmas(''.join(line))
 
 print(count)
