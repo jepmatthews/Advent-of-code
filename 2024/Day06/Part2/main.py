@@ -82,10 +82,6 @@ def turn_right(direction):
 
 f = open("../input.txt")
 
-x = (Coordinate(1,2),Direction.North)
-y = (Coordinate(1,2),Direction.North)
-print(x == y)
-
 lines = f.readlines()
 
 lines = list(reversed(lines))
@@ -100,8 +96,6 @@ lines = list(map(lambda line: list(map(Cell,line)),lines))
 
 labMap = Map(lines,startCoordinate,Direction.North)
 
-print(labMap)
-print("\n")
 
 infiniteLoopObstacles = set()
 
