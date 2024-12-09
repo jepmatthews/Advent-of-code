@@ -68,7 +68,7 @@ for y, line in enumerate(lines):
         if(ch == "^"):
             startCoordinate = Coordinate(x,y)
 
-lines = list(map(lambda string: string.replace("\n","").replace("^",""),lines))
+lines = list(map(lambda string: string.replace("\n","").replace("^","."),lines))
 lines = list(map(lambda line: list(map(Cell,line)),lines))
 labMap = Map(lines,startCoordinate,Direction.North)
 

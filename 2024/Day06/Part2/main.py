@@ -17,6 +17,12 @@ class Coordinate:
         self.y = y
     def __str__(self):
         return f"(x: {self.x},y: {self.y})"
+    def __eq__ (self,other):
+        if not isinstance(other, Coordinate):
+            return NotImplemented
+        return self.x == other.x and self.y == other.y
+    def __hash__(self):
+        return hash((self.x,self.y))
     def moveDirection(self,direction):
         if direction is Direction.North:
             return Coordinate(self.x,self.y+1)
@@ -34,6 +40,7 @@ class Map:
         self.maxX = len(map[0]) - 1
         self.maxY = len(map) - 1
         self.direction = startDirection
+        self.history = set()
     def guardIsInMap(self):
         return 0 <= self.position.x <= self.maxX and 0 <= self.position.y <= self.maxY
     def takeStep(self):
@@ -41,11 +48,26 @@ class Map:
         if  (0 <= nextPosition.x <= self.maxX and 0 <= nextPosition.y <= self.maxY) \
                 and (self.map[nextPosition.y][nextPosition.x] == Cell.Obstacle):
             self.direction = turn_right(self.direction)
+            return False
         else:
             self.map[self.position.y][self.position.x] = Cell.Visited
+            doubledBack = False
+            if((self.position,self.direction) in self.history):
+                doubledBack = True
+            self.history.add((self.position,self.direction))
             self.position = nextPosition
+            return doubledBack
     def __str__(self):
         return "\n".join(map(lambda line: "".join(map(lambda cell: cell.value,line)),reversed(self.map)))
+    def mapWithObstacle(self,obstacleCoordinate,startPosition,startDirection):
+        newMap = list(map(list,self.map))
+        newMap[obstacleCoordinate.y][obstacleCoordinate.x] = Cell.Obstacle
+        return Map(newMap,startPosition,startDirection)
+    def isInfiniteLoop(self):
+        while(self.guardIsInMap()):
+            if self.takeStep():
+                return True
+        return False
 
 def turn_right(direction):
     if direction is Direction.North:
@@ -60,16 +82,19 @@ def turn_right(direction):
 
 f = open("../input.txt")
 
+x = (Coordinate(1,2),Direction.North)
+y = (Coordinate(1,2),Direction.North)
+print(x == y)
+
 lines = f.readlines()
 
 lines = list(reversed(lines))
-# print(list(enumerate(lines)))
 for y, line in enumerate(lines):
     for x,ch in enumerate(line):
         if(ch == "^"):
             startCoordinate = Coordinate(x,y)
 
-lines = list(map(lambda string: string.replace("\n","").replace("^",""),lines))
+lines = list(map(lambda string: string.replace("\n","").replace("^","."),lines))
             
 lines = list(map(lambda line: list(map(Cell,line)),lines))
 
@@ -77,7 +102,19 @@ labMap = Map(lines,startCoordinate,Direction.North)
 
 print(labMap)
 print("\n")
+
+infiniteLoopObstacles = set()
+
 while(labMap.guardIsInMap()):
     labMap.takeStep()
 
-print(sum(map(lambda line: line.count(Cell.Visited),labMap.map)))
+labMap.history.remove((startCoordinate,Direction.North))
+
+for (cell,_) in labMap.history:
+    if  (0 <= cell.x <= labMap.maxX and 0 <= cell.y <= labMap.maxY):
+        mapWithObstacle = labMap.mapWithObstacle(cell,startCoordinate,Direction.North)
+        if(mapWithObstacle.isInfiniteLoop()):
+            infiniteLoopObstacles.add(cell)
+
+
+print(len(infiniteLoopObstacles))
