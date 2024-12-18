@@ -82,9 +82,5 @@ for cell in cellMap.get_all_cells():
         cell.propagate_region(cellMap,newRegion)
         regions.append(newRegion)
 
-result = 0
-for region in regions:
-    print(f'Region letter: {region.letter}, area: {region.get_area()}, perimeter: {region.get_perimeter()}, cost: {region.get_cost()}')
-    result += region.get_cost()
-
+result = sum(map(lambda region: region.get_cost(),regions))
 print(result)
